@@ -1,5 +1,6 @@
 import 'package:home_widget/home_widget.dart';
 import 'package:leetcode_widget/daily_problem/services.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeWidgetConfig {
@@ -21,9 +22,9 @@ class HomeWidgetConfig {
   }
 
   static void _launchedFromWidget(Uri? uri) {
-    print("uri: $uri");
-    print("uri.host: ${uri?.host}");
-    print("uri.host: ${uri?.scheme}");
+    Logger().d("uri: $uri");
+    Logger().d("uri.host: ${uri?.host}");
+    Logger().d("uri.host: ${uri?.scheme}");
     //* Check if app is launched widget
     if (uri?.scheme.toLowerCase() == 'dailyProblemWidget'.toLowerCase()) {
       launchLeetcode();
