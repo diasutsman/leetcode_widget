@@ -8,7 +8,6 @@ class HomeWidgetConfig {
   static const String _androidWidgetName = 'DailyProblemWidget';
 
   static Future<void> init() async {
-    //TODO: Make it so that it can launch leetcode in the browser on widget clicked
     await updateDailyProblem();
     HomeWidget.setAppGroupId(_appGroupId);
     //* Check if run
