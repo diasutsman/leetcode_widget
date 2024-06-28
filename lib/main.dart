@@ -1,11 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:home_widget/home_widget.dart';
+import 'package:leetcode_widget/home_widget_config.dart';
+// import 'package:workmanager/workmanager.dart';
+
+// @pragma(
+//     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) {
+//     print(
+//         "Native called background task: $task"); //simpleTask will be emitted here.
+//     return Future.value(true);
+//   });
+// }
 
 void main() {
+  // Workmanager().initialize(
+  //     callbackDispatcher, // The top level function, aka callbackDispatcher
+  //     isInDebugMode:
+  //         true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  //     );
+  // Workmanager().registerOneOffTask("task-identifier", "simpleTask");
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    HomeWidgetConfig.init();
+    super.initState();
+  }
 
   // This widget is the root of your application.
   @override
