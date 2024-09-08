@@ -26,13 +26,16 @@ class DailyProblemWidget : AppWidgetProvider() {
             val views = RemoteViews(context.packageName, R.layout.daily_problem_widget).apply {
 
                 val title = widgetData.getString("problem_title", null)
-                setTextViewText(R.id.headline_title, title ?: "No title set")
+                setTextViewText(R.id.problem_title, title ?: "No title set")
 
                 val description = widgetData.getString("problem_difficulty", null)
-                setTextViewText(R.id.headline_description, description ?: "No description set")
+                setTextViewText(R.id.problem_difficulty, description ?: "No description set")
 
                 val accRate = widgetData.getString("problem_acc_rate", null)
                 setTextViewText(R.id.problem_acc_rate, accRate ?: "No acceptance rate")
+                
+                val dailyStreak = widgetData.getString("streak_count", null)
+                setTextViewText(R.id.daily_streak, dailyStreak ?: "No daily streak")
 
                 val problemLink = widgetData.getString("problem_link", null);
 

@@ -3,4 +3,10 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
+    <string name="problem_title">Problem Title:</string>
+    <string name="problem_difficulty">Problem Difficulty:</string>
+    <string name="problem_acceptance_rate">Problem Acceptance Rate</string>
+    <string name="your_streak">Your Streak:</string>
+    <string name="leetcode_daily_problem">LeetCode Daily Problem</string>
+    <string name="click_widget_to_view_problem">Click widget to view problem</string>
 </resources>

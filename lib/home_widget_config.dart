@@ -1,5 +1,6 @@
 import 'package:home_widget/home_widget.dart';
 import 'package:leetcode_widget/daily_problem/services.dart';
+import 'package:leetcode_widget/daily_streak/services.dart';
 import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -10,6 +11,7 @@ class HomeWidgetConfig {
 
   static Future<void> init() async {
     await updateDailyProblem();
+    await updateDailyStreak();
     HomeWidget.setAppGroupId(_appGroupId);
     //* Check if run
     final uri = await HomeWidget.initiallyLaunchedFromHomeWidget();
@@ -55,6 +57,19 @@ class HomeWidgetConfig {
     HomeWidget.saveWidgetData<String>('problem_link', url);
     HomeWidget.saveWidgetData<String>('problem_acc_rate',
         "${dailyProblem.question.acRate.toStringAsFixed(1)}%");
+    HomeWidget.updateWidget(
+      iOSName: _iOSWidgetName,
+      androidName: _androidWidgetName,
+    );
+  }
+
+  static Future<void> updateDailyStreak() async {
+    final dailyProblem = await DailyStreakServices.getDailyStreak();
+
+    HomeWidget.saveWidgetData<String>(
+      'streak_count',
+      dailyProblem.streakCount.toString(),
+    );
     HomeWidget.updateWidget(
       iOSName: _iOSWidgetName,
       androidName: _androidWidgetName,

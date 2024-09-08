@@ -1,7 +1,14 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:leetcode_widget/daily_streak/services.dart';
 import 'package:leetcode_widget/home_widget_config.dart';
+import 'package:leetcode_widget/main_dio.dart';
+import 'package:leetcode_widget/web_login_screen.dart';
+import 'package:logger/logger.dart';
 // import 'package:workmanager/workmanager.dart';
 
 // @pragma(
@@ -33,35 +40,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const String _leetcodeSession = "LEETCODE_SESSION";
-  void _launchURL() async {
-    final theme = Theme.of(context);
-    try {
-      await launchUrl(
-        Uri.parse('https://leetcode.com/accounts/login'),
-        customTabsOptions: CustomTabsOptions(
-          colorSchemes: CustomTabsColorSchemes.defaults(
-            toolbarColor: theme.colorScheme.surface,
-          ),
-          shareState: CustomTabsShareState.on,
-          urlBarHidingEnabled: true,
-          showTitle: true,
-          closeButton: CustomTabsCloseButton(
-            icon: CustomTabsCloseButtonIcons.back,
-          ),
-        ),
-        safariVCOptions: SafariViewControllerOptions(
-          preferredBarTintColor: theme.colorScheme.surface,
-          preferredControlTintColor: theme.colorScheme.onSurface,
-          barCollapsingEnabled: true,
-          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-        ),
-      );
-    } catch (e) {
-      // If the URL launch fails, an exception will be thrown. (For example, if no browser app is installed on the Android device.)
-      debugPrint(e.toString());
-    }
-  }
+  static const String _leetcodeSessionKey = "LEETCODE_SESSION";
 
   void _checkIfCookieExists() async {
     const aOptions = AndroidOptions(
@@ -76,14 +55,28 @@ class _MyAppState extends State<MyApp> {
     );
 
     String? cookie = await storage.read(
-      key: _leetcodeSession,
+      key: _leetcodeSessionKey,
       aOptions: aOptions,
       iOptions: iOptions,
     );
 
     if (cookie == null) {
-      _launchURL();
+      final String leetCodeSession = await navigatorKey.currentState?.push(
+        MaterialPageRoute(builder: (context) => const WebLoginScreen()),
+      );
+
+      await storage.write(
+        key: _leetcodeSessionKey,
+        value: leetCodeSession,
+        aOptions: aOptions,
+        iOptions: iOptions,
+      );
+
+      cookie = leetCodeSession;
     }
+
+    DailyStreakServices.getDailyStreak();
+    return;
   }
 
   @override
@@ -93,10 +86,13 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  final navigatorKey = GlobalKey<NavigatorState>();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.

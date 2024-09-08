@@ -3,53 +3,133 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget_container"
     style="@style/Widget.Android.AppWidget.Container"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:theme="@style/Theme.Android.AppWidgetContainer"
 >
-
     <TextView
-        android:id="@+id/headline_title"
+        android:id="@+id/leetcode_title"
         style="@style/Widget.Android.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:background="@android:color/transparent"
-        android:text="Title"
+        android:text="@string/leetcode_daily_problem"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/problem_title_text"
+        android:layout_below="@id/leetcode_title"
+        style="@style/Widget.Android.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:text="@string/problem_title"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/headline_description"
+        android:id="@+id/problem_title"
         style="@style/Widget.Android.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headline_title"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_below="@id/leetcode_title"
+        android:layout_toEndOf="@+id/problem_title_text"
+        android:background="@android:color/transparent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:text="Split Linked List In Partst" />
+
+    <TextView
+        android:id="@+id/problem_difficulty_text"
+        style="@style/Widget.Android.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/problem_title"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:background="@android:color/transparent"
-        android:text="Title"
+        android:text="@string/problem_difficulty"
         android:textSize="16sp" />
-        
+
+    <TextView
+        android:id="@+id/problem_difficulty"
+        style="@style/Widget.Android.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/problem_title"
+        android:layout_toEndOf="@+id/problem_difficulty_text"
+        android:background="@android:color/transparent"
+        tools:text="Title"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/problem_acc_rate_text"
+        style="@style/Widget.Android.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/problem_difficulty"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:text="@string/problem_acceptance_rate"
+        android:textSize="16sp" />
+
     <TextView
         android:id="@+id/problem_acc_rate"
+        android:layout_toEndOf="@+id/problem_acc_rate_text"
         style="@style/Widget.Android.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headline_description"
+        android:layout_below="@+id/problem_difficulty"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        tools:text="Title"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/daily_streak_text"
+        style="@style/Widget.Android.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/problem_acc_rate"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
         android:background="@android:color/transparent"
-        android:text="Title"
+        android:text="@string/your_streak"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/daily_streak"
+        style="@style/Widget.Android.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/problem_acc_rate"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@+id/daily_streak_text"
+        android:background="@android:color/transparent"
+        tools:text="Title"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/click_to_view"
+        style="@style/Widget.Android.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/daily_streak"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:text="@string/click_widget_to_view_problem"
         android:textSize="16sp" />
 
 </RelativeLayout>
