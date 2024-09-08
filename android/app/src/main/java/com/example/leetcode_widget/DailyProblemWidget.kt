@@ -1,16 +1,14 @@
 package com.example.leetcode_widget
 
+// New import.
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
-
-// New import.
 import es.antonborri.home_widget.HomeWidgetPlugin
-import es.antonborri.home_widget.HomeWidgetBackgroundIntent
-import es.antonborri.home_widget.HomeWidgetLaunchIntent
-import es.antonborri.home_widget.HomeWidgetProvider
 
 
 /**
@@ -37,18 +35,21 @@ class DailyProblemWidget : AppWidgetProvider() {
                 setTextViewText(R.id.problem_acc_rate, accRate ?: "No acceptance rate")
 
                 val problemLink = widgetData.getString("problem_link", null);
-                val uri = Uri.parse(problemLink)
-                // Pending intent to update counter on button click
-                // val backgroundIntent = HomeWidgetBackgroundIntent.getBroadcast(context,
-                //         Uri.parse("dailyProblemWidget://launchLeetcode"))
-                // setOnClickPendingIntent(R.id.widget_container, backgroundIntent)
 
-                val pendingIntentWithData = HomeWidgetLaunchIntent.getActivity(
-                        context,
-                        MainActivity::class.java,
-                        Uri.parse("dailyProblemWidget://")
-                        )
-                setOnClickPendingIntent(R.id.widget_container, pendingIntentWithData)
+                val uri = Uri.parse(problemLink)
+                // Create an Intent to open the link in a browser
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+
+                // Create a PendingIntent to open the URL in a browser
+                val pendingIntent = PendingIntent.getActivity(
+                    context,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+
+                setOnClickPendingIntent(R.id.widget_container, pendingIntent)
+
             }
 
             appWidgetManager.updateAppWidget(appWidgetId, views)

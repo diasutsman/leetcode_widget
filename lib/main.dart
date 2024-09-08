@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:leetcode_widget/home_widget_config.dart';
-import 'package:logger/logger.dart';
-import 'package:workmanager/workmanager.dart';
+// import 'package:workmanager/workmanager.dart';
 
-
-@pragma(
-    'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
-    Logger().d(
-        "Native called background task: $task"); //simpleTask will be emitted here.
-    return Future.value(true);
-  });
-}
+// @pragma(
+//     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) {
+//     Logger().d(
+//         "Native called background task: $task"); //simpleTask will be emitted here.
+//     return Future.value(true);
+//   });
+// }
 
 void main() {
-  Workmanager().initialize(
-      callbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode:
-          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-      );
-  Workmanager().registerOneOffTask("task-identifier", "simpleTask");
+  // Workmanager().initialize(
+  //     callbackDispatcher, // The top level function, aka callbackDispatcher
+  //     isInDebugMode:
+  //         true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  //     );
+  // Workmanager().registerOneOffTask("task-identifier", "simpleTask");
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -33,8 +33,62 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  static const String _leetcodeSession = "LEETCODE_SESSION";
+  void _launchURL() async {
+    final theme = Theme.of(context);
+    try {
+      await launchUrl(
+        Uri.parse('https://leetcode.com/accounts/login'),
+        customTabsOptions: CustomTabsOptions(
+          colorSchemes: CustomTabsColorSchemes.defaults(
+            toolbarColor: theme.colorScheme.surface,
+          ),
+          shareState: CustomTabsShareState.on,
+          urlBarHidingEnabled: true,
+          showTitle: true,
+          closeButton: CustomTabsCloseButton(
+            icon: CustomTabsCloseButtonIcons.back,
+          ),
+        ),
+        safariVCOptions: SafariViewControllerOptions(
+          preferredBarTintColor: theme.colorScheme.surface,
+          preferredControlTintColor: theme.colorScheme.onSurface,
+          barCollapsingEnabled: true,
+          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+        ),
+      );
+    } catch (e) {
+      // If the URL launch fails, an exception will be thrown. (For example, if no browser app is installed on the Android device.)
+      debugPrint(e.toString());
+    }
+  }
+
+  void _checkIfCookieExists() async {
+    const aOptions = AndroidOptions(
+      encryptedSharedPreferences: true,
+    );
+    const iOptions = IOSOptions(
+      accessibility: KeychainAccessibility.first_unlock,
+    );
+    const storage = FlutterSecureStorage(
+      aOptions: aOptions,
+      iOptions: iOptions,
+    );
+
+    String? cookie = await storage.read(
+      key: _leetcodeSession,
+      aOptions: aOptions,
+      iOptions: iOptions,
+    );
+
+    if (cookie == null) {
+      _launchURL();
+    }
+  }
+
   @override
   void initState() {
+    _checkIfCookieExists();
     HomeWidgetConfig.init();
     super.initState();
   }
